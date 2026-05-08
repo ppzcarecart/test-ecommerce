@@ -1,4 +1,4 @@
-# test-ecommerce — Maison Aleta
+# test-ecommerce — GreatCart
 
 A Django 5 luxury e-commerce storefront with a session-based cart, Stripe
 payment-intent checkout, a seeded admin user + sample products, and an
@@ -77,7 +77,7 @@ exercise live payments.
 
 - Manifest: `/manifest.webmanifest`
 - Service worker: `/sw.js` (network-first for HTML, cache-first for assets, `/offline/` fallback)
-- Install: triggered via the browser's native prompt; `window.MaisonAleta.promptInstall()` is exposed for a custom button.
+- Install: triggered via the browser's native prompt; `window.GreatCart.promptInstall()` is exposed for a custom button.
 
 ## License
 

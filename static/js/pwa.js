@@ -15,8 +15,8 @@
   });
 
   // Expose a tiny global so the UI could surface a custom install button later.
-  window.MaisonAleta = window.MaisonAleta || {};
-  window.MaisonAleta.promptInstall = async function () {
+  window.GreatCart = window.GreatCart || {};
+  window.GreatCart.promptInstall = async function () {
     if (!deferredPrompt) return null;
     deferredPrompt.prompt();
     const choice = await deferredPrompt.userChoice;

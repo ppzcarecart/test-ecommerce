@@ -1,5 +1,5 @@
 {% load static %}
-const CACHE = 'maison-aleta-v1';
+const CACHE = 'greatcart-v1';
 const PRECACHE = [
   '/',
   '/offline/',

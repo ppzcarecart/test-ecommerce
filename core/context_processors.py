@@ -15,7 +15,7 @@ def site(request):
         nav_categories = []
 
     return {
-        "SITE_NAME": getattr(settings, "SITE_NAME", "Maison Aleta"),
+        "SITE_NAME": getattr(settings, "SITE_NAME", "GreatCart"),
         "SITE_TAGLINE": getattr(settings, "SITE_TAGLINE", "Curated luxury goods"),
         "DEFAULT_CURRENCY": getattr(settings, "DEFAULT_CURRENCY", "USD"),
         "STRIPE_PUBLIC_KEY": getattr(settings, "STRIPE_PUBLIC_KEY", ""),

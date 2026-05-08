@@ -125,7 +125,7 @@ DJANGO_ADMIN_USERNAME = config("DJANGO_ADMIN_USERNAME", default="admin")
 DJANGO_ADMIN_PASSWORD = config("DJANGO_ADMIN_PASSWORD", default="ChangeMe123!")
 
 # Site / brand metadata (also exposed via context processor)
-SITE_NAME = "Maison Aleta"
+SITE_NAME = "GreatCart"
 SITE_TAGLINE = "Curated luxury goods"
 
 # Security niceties for production deployments

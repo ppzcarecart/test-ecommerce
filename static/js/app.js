@@ -1,4 +1,4 @@
-// Maison Aleta — storefront UI helpers
+// GreatCart — storefront UI helpers
 (function () {
   'use strict';
 
