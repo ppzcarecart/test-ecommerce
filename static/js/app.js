@@ -1,4 +1,4 @@
-// GreatCart — storefront UI helpers
+// LiveBoutique — storefront UI helpers
 (function () {
   'use strict';
 

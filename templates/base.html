@@ -27,8 +27,22 @@
 
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="brand" href="{% url 'core:home' %}">
-          <span class="brand__mark">M</span>
+        <a class="brand" href="{% url 'core:home' %}" aria-label="{{ SITE_NAME }} home">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="32" height="32" focusable="false">
+              <defs>
+                <linearGradient id="brandgold" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#e7cf99"/>
+                  <stop offset="55%" stop-color="#c8a96a"/>
+                  <stop offset="100%" stop-color="#9a7f48"/>
+                </linearGradient>
+              </defs>
+              <g fill="url(#brandgold)">
+                <path d="M14 14h6v28h14v6H14z"/>
+                <path d="M30 14h11a9 9 0 0 1 5.4 16.2A10 10 0 0 1 41 48H30zm6 5v10h5a5 5 0 0 0 0-10zm0 14v10h6.5a5 5 0 0 0 0-10z" fill-rule="evenodd"/>
+              </g>
+            </svg>
+          </span>
           <span class="brand__name">{{ SITE_NAME }}</span>
         </a>
 

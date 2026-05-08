@@ -1,4 +1,4 @@
-# Multi-stage build for the GreatCart storefront.
+# Multi-stage build for the LiveBoutique storefront.
 ARG PYTHON_VERSION=3.12
 
 # ----- builder ---------------------------------------------------------------
