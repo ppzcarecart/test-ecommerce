@@ -29,18 +29,26 @@
       <div class="site-header__inner">
         <a class="brand" href="{% url 'core:home' %}" aria-label="{{ SITE_NAME }} home">
           <span class="brand__mark" aria-hidden="true">
-            <svg viewBox="0 0 64 64" width="32" height="32" focusable="false">
+            <svg viewBox="0 0 64 64" width="36" height="36" focusable="false">
               <defs>
+                <radialGradient id="brand-disc" cx="50%" cy="40%" r="60%">
+                  <stop offset="0%" stop-color="#1c1c20"/>
+                  <stop offset="100%" stop-color="#0a0a0c"/>
+                </radialGradient>
                 <linearGradient id="brandgold" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#e7cf99"/>
+                  <stop offset="0%" stop-color="#f4dfaa"/>
                   <stop offset="55%" stop-color="#c8a96a"/>
-                  <stop offset="100%" stop-color="#9a7f48"/>
+                  <stop offset="100%" stop-color="#7a6334"/>
                 </linearGradient>
               </defs>
-              <g fill="url(#brandgold)">
-                <path d="M14 14h6v28h14v6H14z"/>
-                <path d="M30 14h11a9 9 0 0 1 5.4 16.2A10 10 0 0 1 41 48H30zm6 5v10h5a5 5 0 0 0 0-10zm0 14v10h6.5a5 5 0 0 0 0-10z" fill-rule="evenodd"/>
+              <circle cx="32" cy="32" r="31" fill="url(#brand-disc)"/>
+              <circle cx="32" cy="32" r="29.5" fill="none" stroke="url(#brandgold)" stroke-width="1.2"/>
+              <circle cx="32" cy="32" r="26" fill="none" stroke="url(#brandgold)" stroke-width="0.5" opacity="0.55"/>
+              <g fill="url(#brandgold)" font-family="Georgia, 'Cormorant Garamond', 'Times New Roman', serif" font-weight="700">
+                <text x="22" y="42" font-size="28" text-anchor="middle">L</text>
+                <text x="42" y="42" font-size="28" text-anchor="middle">B</text>
               </g>
+              <circle cx="32" cy="50" r="0.9" fill="url(#brandgold)" opacity="0.85"/>
             </svg>
           </span>
           <span class="brand__name">{{ SITE_NAME }}</span>
