@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Checkout — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="page-head">
+    <p class="page-head__eyebrow">Step 1 of 2</p>
+    <h1>Checkout</h1>
+  </section>
+
+  <div class="checkout">
+    <form class="checkout__form" method="post" novalidate>
+      {% csrf_token %}
+      <fieldset>
+        <legend>Contact</legend>
+        <label>Email
+          {{ form.email }}
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Shipping address</legend>
+        <label>Full name {{ form.full_name }}</label>
+        <label>Address {{ form.address_line1 }}</label>
+        <label>Address line 2 {{ form.address_line2 }}</label>
+        <div class="row">
+          <label>City {{ form.city }}</label>
+          <label>Postal code {{ form.postal_code }}</label>
+        </div>
+        <label>Country {{ form.country }}</label>
+      </fieldset>
+      {% if form.errors %}
+        <div class="form-errors">
+          {% for field, errs in form.errors.items %}
+            {% for err in errs %}<p>{{ field }}: {{ err }}</p>{% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <button type="submit" class="btn btn--primary btn--block">Continue to payment</button>
+    </form>
+
+    <aside class="summary">
+      <h2>Order summary</h2>
+      <ul class="summary__lines">
+        {% for line in cart %}
+          <li>
+            <span>{{ line.product.name }} <em>· {{ line.variant.name }}</em> × {{ line.qty }}</span>
+            <strong>{{ DEFAULT_CURRENCY }} {{ line.line_total|floatformat:2|intcomma }}</strong>
+          </li>
+        {% endfor %}
+      </ul>
+      <dl>
+        <div><dt>Subtotal</dt><dd>{{ DEFAULT_CURRENCY }} {{ subtotal|floatformat:2|intcomma }}</dd></div>
+        <div><dt>Shipping</dt><dd>{{ DEFAULT_CURRENCY }} {{ shipping|floatformat:2|intcomma }}</dd></div>
+        <div class="summary__total"><dt>Total</dt><dd>{{ DEFAULT_CURRENCY }} {{ total|floatformat:2|intcomma }}</dd></div>
+      </dl>
+    </aside>
+  </div>
+{% endblock %}

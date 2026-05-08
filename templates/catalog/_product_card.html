@@ -1,0 +1,12 @@
+{% load humanize %}
+<a class="product-card" href="{{ product.get_absolute_url }}">
+  <div class="product-card__img" {% if product.image %}style="background-image:url('{{ product.image }}')"{% endif %}></div>
+  <div class="product-card__body">
+    <p class="product-card__cat">{{ product.category.name }}</p>
+    <h3 class="product-card__name">{{ product.name }}</h3>
+    <p class="product-card__price">
+      {% if product.has_variants %}From {% endif %}
+      {{ DEFAULT_CURRENCY }} {{ product.display_price|floatformat:2|intcomma }}
+    </p>
+  </div>
+</a>

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Thank you — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="success">
+    <div class="success__crest" aria-hidden="true">✓</div>
+    <h1>Thank you, {{ order.full_name|default:order.email }}.</h1>
+    <p class="success__lede">
+      Your order has been received and a confirmation has been sent to
+      <strong>{{ order.email }}</strong>.
+    </p>
+    <p class="success__order">Order #{{ order.pk }} · {{ order.currency }} {{ order.total|floatformat:2|intcomma }}</p>
+
+    <div class="success__items">
+      {% for item in order.items.all %}
+        <div class="success__item">
+          <p>{{ item.product_name }} <em>— {{ item.variant_name }}</em></p>
+          <p>{{ order.currency }} {{ item.line_total|floatformat:2|intcomma }} · qty {{ item.quantity }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <a class="btn btn--primary" href="{% url 'catalog:product_list' %}">Continue shopping</a>
+  </section>
+{% endblock %}

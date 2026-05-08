@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}{{ product.name }} — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <article class="pdp">
+    <div class="pdp__media">
+      <div class="pdp__img" {% if product.image %}style="background-image:url('{{ product.image }}')"{% endif %}></div>
+    </div>
+    <div class="pdp__body">
+      <p class="pdp__cat"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></p>
+      <h1 class="pdp__name">{{ product.name }}</h1>
+      <p class="pdp__price" data-price>
+        {{ DEFAULT_CURRENCY }} <span data-price-value>{{ product.display_price|floatformat:2|intcomma }}</span>
+      </p>
+
+      {% if product.short_description %}
+        <p class="pdp__short">{{ product.short_description }}</p>
+      {% endif %}
+
+      <form class="pdp__form" method="post" action="{% url 'cart:add' 0 %}" data-add-to-cart>
+        {% csrf_token %}
+        {% if product.variants.all %}
+          <fieldset class="variants">
+            <legend>Choose your variant</legend>
+            <div class="variants__options">
+              {% for v in product.variants.all %}
+                {% if v.is_active %}
+                <label class="variant {% if not v.in_stock %}variant--soldout{% endif %}">
+                  <input
+                    type="radio"
+                    name="variant"
+                    value="{{ v.id }}"
+                    data-price="{{ v.price }}"
+                    data-add-url="{% url 'cart:add' v.id %}"
+                    {% if forloop.first and v.in_stock %}checked{% endif %}
+                    {% if not v.in_stock %}disabled{% endif %}
+                  />
+                  <span class="variant__name">{{ v.name }}</span>
+                  <span class="variant__price">{{ DEFAULT_CURRENCY }} {{ v.price|floatformat:2|intcomma }}</span>
+                  {% if not v.in_stock %}<span class="variant__tag">Sold out</span>{% endif %}
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </fieldset>
+        {% endif %}
+
+        <div class="qty">
+          <label for="qty">Quantity</label>
+          <input id="qty" type="number" name="qty" min="1" max="10" value="1" inputmode="numeric" />
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block">Add to cart</button>
+      </form>
+
+      <div class="pdp__desc">
+        <h2>Details</h2>
+        <p>{{ product.description|linebreaksbr }}</p>
+      </div>
+    </div>
+  </article>
+{% endblock %}

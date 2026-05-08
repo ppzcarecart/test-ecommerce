@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+  <section class="hero">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Maison Édition · Spring</p>
+      <h1 class="hero__title">Considered objects,<br/>made to last.</h1>
+      <p class="hero__lede">
+        Heritage leather, mechanical timepieces, and small-batch fragrance —
+        sourced from artisan houses across Europe.
+      </p>
+      <a class="btn btn--primary" href="{% url 'catalog:product_list' %}">
+        Explore the boutique
+      </a>
+    </div>
+    <div class="hero__art" aria-hidden="true"></div>
+  </section>
+
+  {% if categories %}
+  <section class="section">
+    <div class="section__head">
+      <h2>Curations</h2>
+      <a class="section__link" href="{% url 'catalog:product_list' %}">View all &rarr;</a>
+    </div>
+    <div class="grid grid--cats">
+      {% for c in categories %}
+      <a class="cat-card" href="{{ c.get_absolute_url }}">
+        <div class="cat-card__img" {% if c.hero_image %}style="background-image:url('{{ c.hero_image }}')"{% endif %}></div>
+        <div class="cat-card__body">
+          <h3>{{ c.name }}</h3>
+          <p>{{ c.description }}</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if featured %}
+  <section class="section">
+    <div class="section__head">
+      <h2>Featured</h2>
+    </div>
+    <div class="grid grid--products">
+      {% for p in featured %}
+        {% include "catalog/_product_card.html" with product=p %}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+{% endblock %}

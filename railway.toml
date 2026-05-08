@@ -1,0 +1,7 @@
+[build]
+builder = "DOCKERFILE"
+
+[deploy]
+startCommand = "python manage.py migrate --noinput && gunicorn shop.wsgi:application --bind 0.0.0.0:$PORT --workers 3"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"

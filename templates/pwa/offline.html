@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Offline — {{ SITE_NAME }}{% endblock %}
+{% block content %}
+  <section class="success">
+    <div class="success__crest" aria-hidden="true">⌬</div>
+    <h1>You're offline</h1>
+    <p class="success__lede">Reconnect to continue browsing the boutique. Your cart will be waiting.</p>
+    <a class="btn btn--primary" href="/">Try again</a>
+  </section>
+{% endblock %}

@@ -1,0 +1,172 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Leather Goods",
+      "slug": "leather-goods",
+      "description": "Heritage-craft bags and accessories.",
+      "hero_image": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1200",
+      "position": 1,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Timepieces",
+      "slug": "timepieces",
+      "description": "Mechanical watches for considered wrists.",
+      "hero_image": "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=1200",
+      "position": 2,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Fragrance",
+      "slug": "fragrance",
+      "description": "Perfumes blended in small batches.",
+      "hero_image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200",
+      "position": 3,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "name": "Home",
+      "slug": "home",
+      "description": "Quiet luxury for the spaces you live in.",
+      "hero_image": "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200",
+      "position": 4,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Onyx Tote",
+      "slug": "onyx-tote",
+      "short_description": "Hand-finished full-grain leather, made in Florence.",
+      "description": "A weekday tote cut from full-grain Italian leather, hand-burnished and finished with solid brass hardware.",
+      "base_price": "780.00",
+      "image": "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=1200",
+      "is_active": true,
+      "is_featured": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "Bond Card Holder",
+      "slug": "bond-card-holder",
+      "short_description": "A slim card case in vegetable-tanned leather.",
+      "description": "Six card slots and a centre pocket, finished by hand in Spain.",
+      "base_price": "180.00",
+      "image": "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=1200",
+      "is_active": true,
+      "is_featured": false,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "name": "Meridian Automatic",
+      "slug": "meridian-automatic",
+      "short_description": "38mm automatic with sapphire case-back.",
+      "description": "Swiss Sellita SW200 movement, 38mm brushed steel case, domed sapphire crystal. Water resistant to 100m.",
+      "base_price": "2400.00",
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200",
+      "is_active": true,
+      "is_featured": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "category": 3,
+      "name": "No. 7 Velvet Oud",
+      "slug": "no-7-velvet-oud",
+      "short_description": "Smoked oud, rose absolute, vanilla bourbon.",
+      "description": "An evening fragrance composed in Grasse: oud wood smoked over cedar, with rose absolute and a long vanilla drydown.",
+      "base_price": "260.00",
+      "image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200",
+      "is_active": true,
+      "is_featured": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "category": 4,
+      "name": "Atelier Cashmere Throw",
+      "slug": "atelier-cashmere-throw",
+      "short_description": "Pure Mongolian cashmere, woven in Italy.",
+      "description": "Two-ply cashmere, hand-finished fringe, 130 x 180 cm.",
+      "base_price": "540.00",
+      "image": "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=1200",
+      "is_active": true,
+      "is_featured": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+      "category": 4,
+      "name": "Maison Soy Candle",
+      "slug": "maison-soy-candle",
+      "short_description": "60-hour burn, hand-poured in small batches.",
+      "description": "Soy and coconut wax, double-wick, lead-free cotton.",
+      "base_price": "85.00",
+      "image": "https://images.unsplash.com/photo-1602874801006-2bd96d2e3a37?w=1200",
+      "is_active": true,
+      "is_featured": false,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {"model": "catalog.productvariant", "pk": 1, "fields": {"product": 1, "sku": "TOTE-ONX-S", "name": "Onyx · Small", "price": "780.00", "inventory": 12, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 2, "fields": {"product": 1, "sku": "TOTE-ONX-L", "name": "Onyx · Large", "price": "920.00", "inventory": 6, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 3, "fields": {"product": 1, "sku": "TOTE-CGN-L", "name": "Cognac · Large", "price": "920.00", "inventory": 4, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 4, "fields": {"product": 2, "sku": "CARD-BLK", "name": "Jet Black", "price": "180.00", "inventory": 30, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 5, "fields": {"product": 2, "sku": "CARD-OXB", "name": "Oxblood", "price": "180.00", "inventory": 20, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 6, "fields": {"product": 3, "sku": "MER-STL-BLU", "name": "Steel · Glacier Blue", "price": "2400.00", "inventory": 5, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 7, "fields": {"product": 3, "sku": "MER-STL-SLV", "name": "Steel · Champagne", "price": "2400.00", "inventory": 3, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 8, "fields": {"product": 3, "sku": "MER-GLD-BLK", "name": "Gold · Onyx", "price": "3200.00", "inventory": 2, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 9, "fields": {"product": 4, "sku": "FRAG-V7-50", "name": "Eau de Parfum · 50ml", "price": "260.00", "inventory": 25, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 10, "fields": {"product": 4, "sku": "FRAG-V7-100", "name": "Eau de Parfum · 100ml", "price": "390.00", "inventory": 15, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 11, "fields": {"product": 5, "sku": "THR-IVY", "name": "Ivory", "price": "540.00", "inventory": 10, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 12, "fields": {"product": 5, "sku": "THR-CHR", "name": "Charcoal", "price": "540.00", "inventory": 8, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 13, "fields": {"product": 5, "sku": "THR-CML", "name": "Camel", "price": "540.00", "inventory": 6, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 14, "fields": {"product": 6, "sku": "CDL-FIG", "name": "Black Fig", "price": "85.00", "inventory": 40, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 15, "fields": {"product": 6, "sku": "CDL-VTV", "name": "Vetiver", "price": "85.00", "inventory": 35, "is_active": true}},
+  {"model": "catalog.productvariant", "pk": 16, "fields": {"product": 6, "sku": "CDL-AMB", "name": "Amber", "price": "85.00", "inventory": 25, "is_active": true}}
+]

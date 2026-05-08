@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: shop
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: shop
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shop -d shop"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  web:
+    build: .
+    environment:
+      DJANGO_DEBUG: "1"
+      DJANGO_SECRET_KEY: dev-insecure-key-change-me
+      DJANGO_ALLOWED_HOSTS: "*"
+      USE_SQLITE: "0"
+      DATABASE_URL: postgres://shop:shop@db:5432/shop
+      DJANGO_ADMIN_EMAIL: admin@example.com
+      DJANGO_ADMIN_USERNAME: admin
+      DJANGO_ADMIN_PASSWORD: ChangeMe123!
+      STRIPE_PUBLIC_KEY: pk_test_stub
+      STRIPE_SECRET_KEY: sk_test_stub
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  dbdata:

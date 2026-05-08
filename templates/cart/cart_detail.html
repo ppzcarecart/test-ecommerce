@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Cart — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="page-head">
+    <h1>Your cart</h1>
+    <p class="page-head__lede">Review the items below before continuing to checkout.</p>
+  </section>
+
+  {% if cart.is_empty %}
+    <div class="empty-state">
+      <p>Your cart is empty.</p>
+      <a class="btn btn--primary" href="{% url 'catalog:product_list' %}">Browse the boutique</a>
+    </div>
+  {% else %}
+    <div class="cart">
+      <ul class="cart__lines">
+        {% for line in cart %}
+          <li class="cart-line">
+            <a class="cart-line__img" href="{{ line.product.get_absolute_url }}"
+               {% if line.product.image %}style="background-image:url('{{ line.product.image }}')"{% endif %}></a>
+            <div class="cart-line__body">
+              <p class="cart-line__cat">{{ line.product.category.name }}</p>
+              <h3 class="cart-line__name">
+                <a href="{{ line.product.get_absolute_url }}">{{ line.product.name }}</a>
+              </h3>
+              <p class="cart-line__variant">{{ line.variant.name }}</p>
+
+              <form method="post" action="{% url 'cart:update' line.variant.id %}" class="cart-line__qty">
+                {% csrf_token %}
+                <label for="qty-{{ line.variant.id }}">Qty</label>
+                <input id="qty-{{ line.variant.id }}" type="number" name="qty" min="1" max="20" value="{{ line.qty }}" />
+                <button type="submit" class="btn btn--ghost">Update</button>
+              </form>
+            </div>
+            <div class="cart-line__price">
+              <p class="cart-line__total">
+                {{ DEFAULT_CURRENCY }} {{ line.line_total|floatformat:2|intcomma }}
+              </p>
+              <form method="post" action="{% url 'cart:remove' line.variant.id %}">
+                {% csrf_token %}
+                <button type="submit" class="link-btn">Remove</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <aside class="summary">
+        <h2>Order summary</h2>
+        <dl>
+          <div><dt>Subtotal</dt><dd>{{ DEFAULT_CURRENCY }} {{ cart.subtotal|floatformat:2|intcomma }}</dd></div>
+          <div><dt>Shipping</dt><dd>Calculated at checkout</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--block" href="{% url 'payments:checkout' %}">Continue to checkout</a>
+        <a class="btn btn--ghost btn--block" href="{% url 'catalog:product_list' %}">Keep browsing</a>
+      </aside>
+    </div>
+  {% endif %}
+{% endblock %}
