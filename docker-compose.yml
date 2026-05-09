@@ -18,16 +18,20 @@ services:
   web:
     build: .
     environment:
-      DJANGO_DEBUG: "1"
+      DJANGO_DEBUG: "True"
       DJANGO_SECRET_KEY: dev-insecure-key-change-me
-      DJANGO_ALLOWED_HOSTS: "*"
-      USE_SQLITE: "0"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0"
+      SITE_BASE_URL: http://localhost:8000
+      USE_SQLITE: "False"
       DATABASE_URL: postgres://shop:shop@db:5432/shop
       DJANGO_ADMIN_EMAIL: admin@example.com
       DJANGO_ADMIN_USERNAME: admin
       DJANGO_ADMIN_PASSWORD: ChangeMe123!
       STRIPE_PUBLIC_KEY: pk_test_stub
       STRIPE_SECRET_KEY: sk_test_stub
+      STRIPE_WEBHOOK_SECRET: whsec_stub
+      EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+      DEFAULT_FROM_EMAIL: "LiveBoutique <noreply@liveboutique.test>"
     depends_on:
       db:
         condition: service_healthy

@@ -8,7 +8,6 @@ from django.core.management.base import BaseCommand
 
 from catalog.models import Category, Product, ProductVariant
 
-
 CATEGORIES = [
     {
         "name": "Leather Goods",

@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <h1>{{ title }}</h1>
+  <p>
+    Upload a CSV with these columns:
+    <code>category_slug, product_slug, product_name, variant_sku, variant_name,
+    price, inventory</code>. Optional columns:
+    <code>short_description, description, image</code>.
+    Existing variants (matched by <code>variant_sku</code>) are updated in place.
+  </p>
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Import" class="default" />
+    <a href="..">Cancel</a>
+  </form>
+{% endblock %}

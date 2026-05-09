@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Account — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="page-head">
+    <p class="page-head__eyebrow">Your account</p>
+    <h1>Hello, {{ user.first_name|default:user.email }}</h1>
+    <p class="page-head__lede">Past orders, saved addresses, wishlist.</p>
+  </section>
+
+  <div class="account">
+    <section class="account__panel">
+      <header class="account__head"><h2>Past orders</h2></header>
+      {% if orders %}
+        <ul class="account__list">
+          {% for o in orders %}
+            <li>
+              <span class="account__order-id">Order #{{ o.pk }}</span>
+              <span class="account__order-date">{{ o.created_at|date:"M j, Y" }}</span>
+              <span class="account__order-total">{{ o.total }} {{ o.currency }}</span>
+              <span class="account__order-status account__order-status--{{ o.status }}">{{ o.get_status_display }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty">No orders yet.</p>
+      {% endif %}
+    </section>
+
+    <section class="account__panel">
+      <header class="account__head">
+        <h2>Addresses</h2>
+        <a class="btn btn--ghost btn--sm" href="{% url 'accounts:addresses' %}">Manage</a>
+      </header>
+      {% if addresses %}
+        <ul class="account__list">
+          {% for a in addresses %}
+            <li>
+              <strong>{{ a.full_name }}</strong>{% if a.is_default %} <span class="badge badge--gold">Default</span>{% endif %}<br>
+              <span>{{ a.address_line1 }}{% if a.address_line2 %}, {{ a.address_line2 }}{% endif %}, {{ a.city }} {{ a.postal_code }}, {{ a.country }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty">No saved addresses.</p>
+      {% endif %}
+    </section>
+
+    <section class="account__panel">
+      <header class="account__head"><h2>Wishlist</h2></header>
+      {% if wishlist %}
+        <ul class="account__wishlist">
+          {% for w in wishlist %}
+            <li>
+              <a href="{{ w.product.get_absolute_url }}">{{ w.product.name }}</a>
+              <span class="muted">{{ w.product.category.name }}</span>
+              <span class="account__wishlist-price">{{ DEFAULT_CURRENCY }} {{ w.product.display_price|floatformat:2|intcomma }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty">No saved items yet.</p>
+      {% endif %}
+    </section>
+
+    <section class="account__panel">
+      <p><a class="btn btn--ghost" href="{% url 'account_logout' %}">Sign out</a></p>
+    </section>
+  </div>
+{% endblock %}

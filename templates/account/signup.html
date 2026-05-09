@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Create account — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="auth">
+    <h1>Create account</h1>
+    <p class="auth__lede">Save addresses, track orders, build a wishlist.</p>
+
+    <form class="form-grid" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <label>
+          {{ field.label }}
+          {{ field }}
+          {% if field.errors %}<small class="form-grid__error">{{ field.errors|join:", " }}</small>{% endif %}
+        </label>
+      {% endfor %}
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <button type="submit" class="btn btn--primary btn--block">Create account</button>
+    </form>
+
+    <p class="auth__alt">
+      Already have an account? <a href="{% url 'account_login' %}">Sign in</a>
+    </p>
+  </section>
+{% endblock %}

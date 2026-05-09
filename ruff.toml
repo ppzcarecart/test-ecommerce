@@ -1,0 +1,14 @@
+target-version = "py312"
+line-length = 100
+extend-exclude = [
+    ".venv",
+    "**/migrations/**",
+    "staticfiles",
+]
+
+[lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]  # line length is enforced by formatter, not linter
+
+[lint.per-file-ignores]
+"tests/**" = ["E402"]

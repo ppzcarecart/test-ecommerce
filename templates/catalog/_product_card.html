@@ -1,11 +1,27 @@
 {% load humanize %}
-<a class="product-card" href="{{ product.get_absolute_url }}">
-  <div class="product-card__img" {% if product.image %}style="background-image:url('{{ product.image }}')"{% endif %}></div>
+<a class="product-card" href="{{ product.get_absolute_url }}"
+   aria-label="{{ product.name }} — {{ product.category.name }}">
+  <div class="product-card__img-wrap">
+    {% if product.primary_image_url %}
+      <img class="product-card__img"
+           src="{{ product.primary_image_url }}"
+           alt="{{ product.name }}"
+           width="600" height="600"
+           loading="lazy" decoding="async" />
+    {% else %}
+      <div class="product-card__img product-card__img--empty" aria-hidden="true"></div>
+    {% endif %}
+    {% if product.is_sold_out %}
+      <span class="badge badge--soldout">Sold out</span>
+    {% elif product.is_low_stock %}
+      <span class="badge badge--low">Low stock</span>
+    {% endif %}
+  </div>
   <div class="product-card__body">
     <p class="product-card__cat">{{ product.category.name }}</p>
     <h3 class="product-card__name">{{ product.name }}</h3>
     <p class="product-card__price">
-      {% if product.has_variants %}From {% endif %}
+      {% if product.has_variants %}<span class="product-card__from">From</span> {% endif %}
       {{ DEFAULT_CURRENCY }} {{ product.display_price|floatformat:2|intcomma }}
     </p>
   </div>

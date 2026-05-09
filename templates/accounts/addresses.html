@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Addresses — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="page-head">
+    <p class="page-head__eyebrow">Account</p>
+    <h1>Shipping addresses</h1>
+  </section>
+
+  <div class="account">
+    <section class="account__panel">
+      <header class="account__head"><h2>Saved addresses</h2></header>
+      {% if addresses %}
+        <ul class="account__list">
+          {% for a in addresses %}
+            <li>
+              <strong>{{ a.full_name }}</strong>{% if a.is_default %} <span class="badge badge--gold">Default</span>{% endif %}<br>
+              <span>{{ a.address_line1 }}{% if a.address_line2 %}, {{ a.address_line2 }}{% endif %}, {{ a.city }} {{ a.postal_code }}, {{ a.country }}</span>
+              <form method="post" action="{% url 'accounts:address_delete' a.pk %}" style="display:inline">
+                {% csrf_token %}
+                <button class="btn btn--ghost btn--sm" type="submit">Delete</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty">No saved addresses.</p>
+      {% endif %}
+    </section>
+
+    <section class="account__panel">
+      <header class="account__head"><h2>Add an address</h2></header>
+      <form method="post" class="form-grid">
+        {% csrf_token %}
+        <input name="full_name" placeholder="Full name" required />
+        <input name="address_line1" placeholder="Street address" required />
+        <input name="address_line2" placeholder="Apt / suite (optional)" />
+        <input name="city" placeholder="City" required />
+        <input name="postal_code" placeholder="Postal code" required />
+        <input name="country" placeholder="Country" value="US" required />
+        <label class="form-grid__check">
+          <input type="checkbox" name="is_default" /> Make this my default
+        </label>
+        <button type="submit" class="btn btn--primary">Save address</button>
+      </form>
+    </section>
+  </div>
+{% endblock %}

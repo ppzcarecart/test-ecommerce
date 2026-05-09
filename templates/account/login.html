@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load allauth %}
+
+{% block title %}Sign in — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="auth">
+    <h1>Sign in</h1>
+    <p class="auth__lede">Enter your email to sign in. We'll keep your cart and orders safe.</p>
+
+    {% if SOCIALACCOUNT_ENABLED %}
+      {% load socialaccount %}
+      {% get_providers as socialaccount_providers %}
+      {% if socialaccount_providers %}
+        <div class="auth__social">
+          {% for provider in socialaccount_providers %}
+            <a class="btn btn--ghost btn--block"
+               href="{% provider_login_url provider.id process='login' %}">
+              Continue with {{ provider.name }}
+            </a>
+          {% endfor %}
+          <div class="auth__divider"><span>or</span></div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    <form class="form-grid" method="post" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <label>
+          {{ field.label }}
+          {{ field }}
+          {% if field.errors %}<small class="form-grid__error">{{ field.errors|join:", " }}</small>{% endif %}
+        </label>
+      {% endfor %}
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <button type="submit" class="btn btn--primary btn--block">Sign in</button>
+    </form>
+
+    <p class="auth__alt">
+      No account yet? <a href="{% url 'account_signup' %}">Create one</a>
+    </p>
+  </section>
+{% endblock %}

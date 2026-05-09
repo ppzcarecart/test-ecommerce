@@ -30,7 +30,7 @@
         <label>Country {{ form.country }}</label>
       </fieldset>
       {% if form.errors %}
-        <div class="form-errors">
+        <div class="form-errors" role="alert">
           {% for field, errs in form.errors.items %}
             {% for err in errs %}<p>{{ field }}: {{ err }}</p>{% endfor %}
           {% endfor %}
@@ -39,7 +39,7 @@
       <button type="submit" class="btn btn--primary btn--block">Continue to payment</button>
     </form>
 
-    <aside class="summary">
+    <aside class="summary" aria-label="Order summary">
       <h2>Order summary</h2>
       <ul class="summary__lines">
         {% for line in cart %}
@@ -51,9 +51,26 @@
       </ul>
       <dl>
         <div><dt>Subtotal</dt><dd>{{ DEFAULT_CURRENCY }} {{ subtotal|floatformat:2|intcomma }}</dd></div>
-        <div><dt>Shipping</dt><dd>{{ DEFAULT_CURRENCY }} {{ shipping|floatformat:2|intcomma }}</dd></div>
+        <div>
+          <dt>Shipping{% if shipping_eta %} <span class="muted">({{ shipping_eta }})</span>{% endif %}</dt>
+          <dd>
+            {% if shipping_is_free %}
+              <span class="badge badge--gold">Free</span>
+            {% else %}
+              {{ DEFAULT_CURRENCY }} {{ shipping|floatformat:2|intcomma }}
+            {% endif %}
+          </dd>
+        </div>
+        {% if tax %}
+          <div><dt>Estimated tax</dt><dd>{{ DEFAULT_CURRENCY }} {{ tax|floatformat:2|intcomma }}</dd></div>
+        {% endif %}
         <div class="summary__total"><dt>Total</dt><dd>{{ DEFAULT_CURRENCY }} {{ total|floatformat:2|intcomma }}</dd></div>
       </dl>
+      {% if not shipping_is_free and shipping_free_threshold %}
+        <p class="summary__note">
+          Free shipping on orders over {{ DEFAULT_CURRENCY }} {{ shipping_free_threshold|floatformat:0 }}.
+        </p>
+      {% endif %}
     </aside>
   </div>
 {% endblock %}

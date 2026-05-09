@@ -1,0 +1,23 @@
+{{ site_name }} order #{{ order.pk }}
+
+Hi {{ order.full_name }},
+
+Thank you for your order. Here is your receipt.
+
+{% for item in items %}- {{ item.product_name }} — {{ item.variant_name }} × {{ item.quantity }} — {{ item.unit_price }} {{ currency }}
+{% endfor %}
+
+Subtotal:  {{ order.subtotal }} {{ currency }}
+Shipping:  {{ order.shipping }} {{ currency }}
+Tax:       {{ order.tax }} {{ currency }}
+Total:     {{ order.total }} {{ currency }}
+
+Ships to:
+{{ order.full_name }}
+{{ order.address_line1 }}{% if order.address_line2 %}, {{ order.address_line2 }}{% endif %}
+{{ order.city }}, {{ order.postal_code }}
+{{ order.country }}
+
+We'll email you when it ships.
+
+— {{ site_name }}

@@ -2,22 +2,29 @@
 {% load humanize %}
 
 {% block title %}
-  {% if active_category %}{{ active_category.name }}{% else %}Boutique{% endif %} — {{ SITE_NAME }}
+  {% if active_category %}{{ active_category.name }}{% elif applied.q %}Results for "{{ applied.q }}"{% else %}Boutique{% endif %} — {{ SITE_NAME }}
 {% endblock %}
+{% block meta_description %}{% if active_category and active_category.description %}{{ active_category.description }}{% else %}{{ SITE_TAGLINE }} — shop curated leather goods, timepieces, fragrance and home.{% endif %}{% endblock %}
 
 {% block content %}
   <section class="page-head">
-    <p class="page-head__eyebrow">LiveBoutique</p>
-    <h1>{% if active_category %}{{ active_category.name }}{% else %}The Boutique{% endif %}</h1>
+    <p class="page-head__eyebrow">{{ SITE_NAME }}</p>
+    <h1>
+      {% if applied.q %}Results for &ldquo;{{ applied.q }}&rdquo;
+      {% elif active_category %}{{ active_category.name }}
+      {% else %}The Boutique{% endif %}
+    </h1>
     {% if active_category and active_category.description %}
       <p class="page-head__lede">{{ active_category.description }}</p>
+    {% elif applied.q %}
+      <p class="page-head__lede">{{ result_count }} item{{ result_count|pluralize }} matched.</p>
     {% else %}
       <p class="page-head__lede">A curated edit of luxury essentials.</p>
     {% endif %}
   </section>
 
   <nav class="chip-rail" aria-label="Categories">
-    <a class="chip {% if not active_category %}chip--active{% endif %}" href="{% url 'catalog:product_list' %}">All</a>
+    <a class="chip {% if not active_category and not applied.q %}chip--active{% endif %}" href="{% url 'catalog:product_list' %}">All</a>
     {% for c in categories %}
       <a class="chip {% if active_category and active_category.id == c.id %}chip--active{% endif %}"
          href="{{ c.get_absolute_url }}">
@@ -26,11 +33,36 @@
     {% endfor %}
   </nav>
 
+  <form class="filter-bar" method="get" action="">
+    {% if applied.q %}<input type="hidden" name="q" value="{{ applied.q }}" />{% endif %}
+    <div class="filter-bar__group" role="group" aria-label="Price range">
+      <label class="visually-hidden" for="min_price">Minimum price</label>
+      <input id="min_price" type="number" name="min_price" inputmode="decimal" min="0" step="1" placeholder="Min $" value="{{ applied.min_price|default:'' }}" />
+      <span aria-hidden="true">–</span>
+      <label class="visually-hidden" for="max_price">Maximum price</label>
+      <input id="max_price" type="number" name="max_price" inputmode="decimal" min="0" step="1" placeholder="Max $" value="{{ applied.max_price|default:'' }}" />
+    </div>
+    <div class="filter-bar__group">
+      <label for="sort" class="visually-hidden">Sort</label>
+      <select id="sort" name="sort">
+        {% for value, label in sort_options %}
+          <option value="{{ value }}" {% if applied.sort == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn--ghost">Apply</button>
+    {% if applied.q or applied.min_price or applied.max_price or applied.category_slugs %}
+      <a class="filter-bar__clear" href="{% if active_category %}{{ active_category.get_absolute_url }}{% else %}{% url 'catalog:product_list' %}{% endif %}">Clear</a>
+    {% endif %}
+  </form>
+
   <div class="grid grid--products">
     {% for product in products %}
       {% include "catalog/_product_card.html" with product=product %}
     {% empty %}
-      <p class="empty">No products in this collection yet.</p>
+      <p class="empty">
+        {% if applied.q %}Nothing matches &ldquo;{{ applied.q }}&rdquo; yet.{% else %}No products in this collection yet.{% endif %}
+      </p>
     {% endfor %}
   </div>
 {% endblock %}

@@ -1,8 +1,27 @@
-Django>=5.0,<5.2
+Django>=5.2,<5.3
 psycopg2-binary>=2.9
 dj-database-url>=2.1
 python-decouple>=3.8
+django-environ>=0.11
 Pillow>=10.0
 stripe>=8.0
 whitenoise>=6.6
 gunicorn>=21.2
+
+# Auth
+django-allauth>=0.61
+requests>=2.31
+PyJWT>=2.8
+cryptography>=42.0
+
+# Security / observability
+django-csp>=3.8
+sentry-sdk>=2.0
+
+# Admin
+django-unfold>=0.20
+
+# Dev / tests
+pytest>=8.0
+pytest-django>=4.8
+ruff>=0.4

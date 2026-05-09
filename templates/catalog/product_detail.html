@@ -1,12 +1,80 @@
 {% extends "base.html" %}
-{% load humanize %}
+{% load humanize static %}
 
 {% block title %}{{ product.name }} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ product.short_description|default:product.description|striptags|truncatechars:150 }}{% endblock %}
+{% block og_title %}{{ product.name }} — {{ SITE_NAME }}{% endblock %}
+{% block og_description %}{{ product.short_description|default:product.description|striptags|truncatechars:150 }}{% endblock %}
+{% block og_type %}product{% endblock %}
+{% block og_image %}{{ product.primary_image_url|default:product.image }}{% endblock %}
+{% block tw_title %}{{ product.name }} — {{ SITE_NAME }}{% endblock %}
+{% block tw_description %}{{ product.short_description|default:product.description|striptags|truncatechars:150 }}{% endblock %}
+{% block tw_image %}{{ product.primary_image_url|default:product.image }}{% endblock %}
+{% block canonical %}{{ SITE_BASE_URL }}{{ product.get_absolute_url }}{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.name|escapejs }}",
+  "description": "{{ product.short_description|default:product.description|striptags|escapejs }}",
+  "image": "{{ product.primary_image_url|default:product.image|escapejs }}",
+  "category": "{{ product.category.name|escapejs }}",
+  "sku": "{% with product.variants.first as v %}{{ v.sku|default:''|escapejs }}{% endwith %}",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "{{ DEFAULT_CURRENCY }}",
+    "lowPrice": "{{ product.display_price }}",
+    "availability": "{% if product.is_sold_out %}https://schema.org/OutOfStock{% else %}https://schema.org/InStock{% endif %}",
+    "url": "{{ SITE_BASE_URL }}{{ product.get_absolute_url }}",
+    "offerCount": "{{ product.variants.count }}"
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %}
   <article class="pdp">
     <div class="pdp__media">
-      <div class="pdp__img" {% if product.image %}style="background-image:url('{{ product.image }}')"{% endif %}></div>
+      {% with images=product.images.all %}
+        {% if images %}
+          <div class="pdp__gallery" data-gallery>
+            <div class="pdp__main" data-gallery-main>
+              <img
+                src="{{ images.0.url }}"
+                alt="{{ images.0.alt|default:product.name }}"
+                width="1200" height="1200"
+                loading="eager" decoding="async"
+                data-gallery-image
+              />
+            </div>
+            <div class="pdp__thumbs" role="tablist" aria-label="Product images">
+              {% for img in images %}
+                <button
+                  type="button"
+                  class="pdp__thumb {% if forloop.first %}pdp__thumb--active{% endif %}"
+                  data-gallery-thumb
+                  data-src="{{ img.url }}"
+                  data-alt="{{ img.alt|default:product.name }}"
+                  aria-label="View image {{ forloop.counter }}"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  role="tab"
+                >
+                  <img src="{{ img.url }}" alt="" width="160" height="160" loading="lazy" decoding="async" />
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <div class="pdp__main">
+            {% if product.image %}
+              <img src="{{ product.image }}" alt="{{ product.name }}"
+                   width="1200" height="1200" loading="eager" decoding="async" />
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endwith %}
     </div>
     <div class="pdp__body">
       <p class="pdp__cat"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></p>
@@ -14,6 +82,12 @@
       <p class="pdp__price" data-price>
         {{ DEFAULT_CURRENCY }} <span data-price-value>{{ product.display_price|floatformat:2|intcomma }}</span>
       </p>
+
+      {% if product.is_sold_out %}
+        <p class="stock-pill stock-pill--out" role="status">Sold out</p>
+      {% elif product.is_low_stock %}
+        <p class="stock-pill stock-pill--low" role="status">Only {{ product.total_inventory }} left</p>
+      {% endif %}
 
       {% if product.short_description %}
         <p class="pdp__short">{{ product.short_description }}</p>
@@ -24,7 +98,7 @@
         {% if product.variants.all %}
           <fieldset class="variants">
             <legend>Choose your variant</legend>
-            <div class="variants__options">
+            <div class="variants__options" role="radiogroup" aria-label="Variant">
               {% for v in product.variants.all %}
                 {% if v.is_active %}
                 <label class="variant {% if not v.in_stock %}variant--soldout{% endif %}">
@@ -34,12 +108,17 @@
                     value="{{ v.id }}"
                     data-price="{{ v.price }}"
                     data-add-url="{% url 'cart:add' v.id %}"
+                    aria-label="{{ v.name }} — {{ DEFAULT_CURRENCY }} {{ v.price }}"
                     {% if forloop.first and v.in_stock %}checked{% endif %}
-                    {% if not v.in_stock %}disabled{% endif %}
+                    {% if not v.in_stock %}disabled aria-disabled="true"{% endif %}
                   />
                   <span class="variant__name">{{ v.name }}</span>
                   <span class="variant__price">{{ DEFAULT_CURRENCY }} {{ v.price|floatformat:2|intcomma }}</span>
-                  {% if not v.in_stock %}<span class="variant__tag">Sold out</span>{% endif %}
+                  {% if not v.in_stock %}
+                    <span class="variant__tag">Sold out</span>
+                  {% elif v.is_low_stock %}
+                    <span class="variant__tag variant__tag--low">Only {{ v.inventory }} left</span>
+                  {% endif %}
                 </label>
                 {% endif %}
               {% endfor %}
@@ -49,11 +128,23 @@
 
         <div class="qty">
           <label for="qty">Quantity</label>
-          <input id="qty" type="number" name="qty" min="1" max="10" value="1" inputmode="numeric" />
+          <input id="qty" type="number" name="qty" min="1" max="10" value="1" inputmode="numeric" aria-label="Quantity" />
         </div>
 
-        <button type="submit" class="btn btn--primary btn--block">Add to cart</button>
+        <button type="submit" class="btn btn--primary btn--block" {% if product.is_sold_out %}disabled aria-disabled="true"{% endif %}>
+          {% if product.is_sold_out %}Sold out{% else %}Add to cart{% endif %}
+        </button>
       </form>
+
+      {% if user.is_authenticated %}
+        <form class="pdp__wishlist" method="post" action="{% url 'accounts:wishlist_toggle' product.id %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ product.get_absolute_url }}" />
+          <button type="submit" class="btn btn--ghost btn--block">
+            {% if in_wishlist %}♥ Remove from wishlist{% else %}♡ Add to wishlist{% endif %}
+          </button>
+        </form>
+      {% endif %}
 
       <div class="pdp__desc">
         <h2>Details</h2>
@@ -61,4 +152,15 @@
       </div>
     </div>
   </article>
+
+  {% if related %}
+    <section class="section section--related">
+      <div class="section__head"><h2>You may also like</h2></div>
+      <div class="grid grid--products">
+        {% for p in related %}
+          {% include "catalog/_product_card.html" with product=p %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 {% endblock %}
